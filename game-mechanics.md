@@ -3,7 +3,7 @@
 ## **Overview**
 This game is a **strategic, turn-based game** played on a **4x4 grid** where two players (Uno and Tres) take turns selecting positions. The goal is to form specific patterns while following strict movement and turn-based rules. Dos is a neutral entity that wins by default if the grid fills up.
 
----
+--- 
 
 ## **Game Components**
 ### **Sets and Elements**
@@ -68,4 +68,6 @@ The game **immediately ends** when any of the following occurs:
 6. **End the game when a win condition is met** and display the result.
 
 ---
+
+> This message proves that this has been edited and used commit to apply changes.
 
