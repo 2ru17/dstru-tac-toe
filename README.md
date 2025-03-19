@@ -65,9 +65,9 @@ compile (TBA)
 
 **Group 1 - S15**
 
--
-- 1
--
+- Aquino, Jan Leoric `@janaquino8`
+- Gutang, Neil Jr. `@2ru17`
+- Tan, Lance Jerwin `@LANCEYOURGITHUBUSERNAMEPLS`
 
 ---
 
