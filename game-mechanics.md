@@ -1,5 +1,5 @@
 # DSTRU-TAC-TOE Game Mechanics and Documentation
-*Last edited by: user*  
+*Last edited by: 2ru17*  
 *Time edited (mm/dd/yy-hhmm): 03/20/25-1310*
 
 ---
