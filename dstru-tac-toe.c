@@ -4,8 +4,8 @@
  * CCDSTRU '24-'25 Final Machine Project
  */
 
-// *Last edited by: 2ru17*
-// *Time edited (mm/dd/yy-hhmm): 03/20/25-1510*
+// *Last edited by: janaquino8*
+// *Time edited (mm/dd/yy-hhmm): 03/20/25-2306*
 
 #include "dstru-tac-toe.h"
 

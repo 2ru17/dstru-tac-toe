@@ -3,8 +3,8 @@
  * Header file for DSTRU-TAC-TOE game
  * CCDSTRU '24-'25 Final Machine Project
  */
-// *Last edited by: 2ru17*
-// *Time edited (mm/dd/yy-hhmm): 03/20/25-1332*
+// *Last edited by: janaquino8*
+// *Time edited (mm/dd/yy-hhmm): 03/20/25-2306*
 
 #ifndef DSTRU_TAC_TOE_H
 #define DSTRU_TAC_TOE_H
