@@ -22,14 +22,14 @@ This game is a **strategic, turn-based game** played on a **4x4 grid** where two
 - **F (Free Positions)**: `F = P − (Uno ∪ Tres)`, represents available moves (not occupied by `Uno` or `Tres`).
 - **turn**: Boolean indicating if a turn is being taken by either player.
 - **go**: Boolean tracking whose turn it is (`true` for Uno, `false` for Tres).
-- **over**: Boolean indicating if the game has ended.
+- **over**: Boolean indicating if the game has ended. (True if either (1) `Uno` achieves a pattern in `W`, (2) `Tres` achieves a pattern in `W`, or (3) grid is fully occupied; `F = ∅`).
 
 ---
 
 ## **Game Flow**
 ### **Initialization**
 - `Uno = ∅`, `Dos = ∅`, `Tres = ∅`
-- `turn = true` (Uno starts first)
+- `turn = true` (Tres starts first)
 - `go = false`
 - `over = false`
 
