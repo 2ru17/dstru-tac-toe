@@ -6,8 +6,8 @@
 // *Last edited by: 2ru17*
 // *Time edited (mm/dd/yy-hhmm): 03/20/25-1332*
 
-#ifndef DTRU_TAC_TOE_H
-#define DTRU_TAC_TOE_H
+#ifndef DSTRU_TAC_TOE_H
+#define DSTRU_TAC_TOE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,13 +27,13 @@ typedef struct {
 /* Game State Structure */
 typedef struct {
     /* Sets of positions */
-    Position uno[MAX_POSITIONS];     /* Positions occupied by Uno */
-    int unoCount;                    /* Number of positions in Uno */
-    Position dos[MAX_POSITIONS];     /* Positions occupied by Dos */
-    int dosCount;                    /* Number of positions in Dos */
-    Position tres[MAX_POSITIONS];    /* Positions occupied by Tres */
-    int tresCount;                   /* Number of positions in Tres */
-    Position freePositions[MAX_POSITIONS];  /* Free positions (F = P - (Uno U Tres)) */
+    Position Uno[MAX_POSITIONS];     /* Positions occupied by Uno */
+    int UnoCount;                    /* Number of positions in Uno */
+    Position Dos[MAX_POSITIONS];     /* Positions occupied by Dos */
+    int DosCount;                    /* Number of positions in Dos */
+    Position Tres[MAX_POSITIONS];    /* Positions occupied by Tres */
+    int TresCount;                   /* Number of positions in Tres */
+    Position freePositions[MAX_POSITIONS];  /* Free positions F (F = P - (Uno U Tres)) */
     int freeCount;                   /* Number of free positions */
     
     /* System variables as defined in specs */
@@ -88,4 +88,4 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount);
  *********************************************/
 void displayGameState(const GameState *game);
 
-#endif /* DTRU_TAC_TOE_H */
+#endif /* DSTRU_TAC_TOE_H */
