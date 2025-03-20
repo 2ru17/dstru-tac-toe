@@ -19,9 +19,9 @@ This game is a **strategic, turn-based game** played on a **4x4 grid** where two
 
 ### **System Variables**
 - **Uno, Dos, Tres**: Sets containing occupied positions for each entity.
-- **F (Free Positions)**: `F = P − (Uno ∪ Tres)`, represents available moves.
-- **turn**: Boolean tracking whose turn it is (`true` for Uno, `false` for Tres).
-- **go**: Boolean used to enforce specific movement conditions.
+- **F (Free Positions)**: `F = P − (Uno ∪ Tres)`, represents available moves (not occupied by `Uno` or `Tres`).
+- **turn**: Boolean indicating if a turn is being taken by either player.
+- **go**: Boolean tracking whose turn it is (`true` for Uno, `false` for Tres).
 - **over**: Boolean indicating if the game has ended.
 
 ---
@@ -37,14 +37,19 @@ This game is a **strategic, turn-based game** played on a **4x4 grid** where two
 - **Player Uno's Move**:
   - If `turn == true` and `go == true` and `pos ∈ F`:
     - Add `pos` to `Uno`.
-    - Switch `turn` and `go` (`turn = false`, `go = false`).
-- **Tres's Move (Opponent)**:
-  - If `turn == false` and `pos ∈ (Uno ∪ Tres)`, they can **remove** a previously occupied position.
-  - Switch `turn` (`turn = true`).
+    - Toggle `turn` and `go` (`turn = false`, `go = false`).
+- **Remove Position**:
+  - If `turn == false` and `pos ∈ (Uno ∪ Tres)`, both players **lose** the position.
+  - Toggle `turn` (`turn = true`).
 - **Player Tres's New Move**:
   - If `turn == true` and `go == false` and `pos ∈ F`:
     - Add `pos` to `Tres`.
     - Toggle `go` (`go = true`).
+
+#### **Order of Turn-Based Actions**
+1. Player Tres Move
+2. Player Uno Move
+3. Remove Position
 
 ### **Winning Conditions**
 - If `Uno`'s occupied positions match any predefined winning pattern in `W`, **Uno Wins**.
