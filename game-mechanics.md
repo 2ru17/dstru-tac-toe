@@ -1,78 +1,114 @@
-# Game Mechanics and Explanation
+# DSTRU-TAC-TOE Game Mechanics and Documentation
+*Last edited by: user*  
+*Time edited (mm/dd/yy-hhmm): 03/20/25-1310*
+
+---
 
 ## **Overview**
-This game is a **strategic, turn-based game** played on a **4x4 grid** where two players (Uno and Tres) take turns selecting positions. The goal is to form specific patterns while following strict movement and turn-based rules. Dos is a neutral entity that wins by default if the grid fills up.
+DSTRU-TAC-TOE is a **strategic, turn-based game** played on a **4x4 grid** where two players (Uno and Tres) take turns selecting positions. The goal is to form specific patterns while following strict movement and turn-based rules. Dos is a neutral entity that wins by default if the grid fills up.
 
---- 
+---
 
-## **Game Components**
-### **Sets and Elements**
-- **A**: `{1, 2, 3, 4}` (The numbers representing rows and columns in the grid)
-- **P**: The Cartesian product `A × A`, representing all possible positions `(x, y)` on the 4x4 grid.
-- **B**: Boolean values `{true, false}` (used for turn and game state tracking).
-- **C**: Predefined winning position sets:
+## **Formal Mathematical Foundation**
+
+### **Sets and Relations**
+- **A**: `{1, 2, 3, 4}` (The set of positive integers less than 5)
+- **P**: The Cartesian product `A × A`, representing all possible positions `(x, y)` on the 4x4 grid
+- **B**: Boolean values `{true, false}` (used for system variables)
+- **C**: Set of winning patterns:
   - **Horizontal Line**: `{(1,1), (1,2), (1,3), (1,4)}`
   - **Main Diagonal**: `{(1,1), (2,2), (3,3), (4,4)}`
   - **Anti-Diagonal**: `{(1,4), (2,3), (3,2), (4,1)}`
   - **Vertical Line**: `{(4,1), (4,2), (4,3), (4,4)}`
-- **T**: A relation on `A` that is **reflexive, symmetric, antisymmetric, and transitive**, ensuring valid movements.
+- **T**: A relation on `A` that is **reflexive, symmetric, antisymmetric, and transitive**
+- **W**: Set `C - T` (winning patterns that are not in relation T)
 
 ### **System Variables**
-- **Uno, Dos, Tres**: Sets containing occupied positions for each entity.
-- **F (Free Positions)**: `F = P − (Uno ∪ Tres)`, represents available moves (not occupied by `Uno` or `Tres`).
-- **turn**: Boolean indicating if a turn is being taken by either player.
-- **go**: Boolean tracking whose turn it is (`true` for Uno, `false` for Tres).
-- **over**: Boolean indicating if the game has ended. (True if either (1) `Uno` achieves a pattern in `W`, (2) `Tres` achieves a pattern in `W`, or (3) grid is fully occupied; `F = ∅`).
+- **Uno, Dos, Tres**: Subsets of P representing positions occupied by each entity
+- **F**: Set of free positions, defined as `F = P − (Uno ∪ Tres)`
+- **turn**: Boolean variable indicating turn state
+- **go**: Boolean variable tracking which player's turn it is
+- **over**: Boolean variable indicating if the game has ended
 
 ---
 
-## **Game Flow**
+## **Game Rules and Logic**
+
 ### **Initialization**
-- `Uno = ∅`, `Dos = ∅`, `Tres = ∅`
-- `turn = true` (Tres starts first)
+- `Uno = ∅` (Empty set)
+- `Dos = ∅` (Empty set)
+- `Tres = ∅` (Empty set)
+- `turn = true`
 - `go = false`
 - `over = false`
 
-### **Turn-Based Actions**
-- **Player Uno's Move**:
-  - If `turn == true` and `go == true` and `pos ∈ F`:
-    - Add `pos` to `Uno`.
-    - Toggle `turn` and `go` (`turn = false`, `go = false`).
-- **Remove Position**:
-  - If `turn == false` and `pos ∈ (Uno ∪ Tres)`, both players **lose** the position.
-  - Toggle `turn` (`turn = true`).
-- **Player Tres's New Move**:
-  - If `turn == true` and `go == false` and `pos ∈ F`:
-    - Add `pos` to `Tres`.
-    - Toggle `go` (`go = true`).
+### **State Transitions (NextPlayerMove)**
 
-#### **Order of Turn-Based Actions**
-1. Player Tres Move
-2. Player Uno Move
-3. Remove Position
+When a position `(pos ∈ P)` is selected, the following state transitions occur:
 
-### **Winning Conditions**
-- If `Uno`'s occupied positions match any predefined winning pattern in `W`, **Uno Wins**.
-- If `Tres`'s occupied positions match any predefined winning pattern in `W`, **Tres Wins**.
-- If `F = ∅` (grid is fully occupied), **Dos Wins**.
+1. **Uno's Move**:
+   - **Condition**: `turn ∧ go ∧ pos ∈ F`
+   - **Effect**:
+     - `Uno = Uno ∪ {pos}` (Add position to Uno's set)
+     - `turn = ¬turn` (Toggle turn)
+     - `go = ¬go` (Toggle go)
 
-### **Game Over Condition**
-The game **immediately ends** when any of the following occurs:
-- `Uno` achieves a pattern in `W` → **Uno Wins**.
-- `Tres` achieves a pattern in `W` → **Tres Wins**.
-- The grid is completely occupied (`F = ∅`) → **Dos Wins**.
+2. **Position Removal**:
+   - **Condition**: `¬turn ∧ pos ∈ (Uno ∪ Tres)`
+   - **Effect**:
+     - `Uno = Uno − {pos}` (Remove position from Uno's set)
+     - `Tres = Tres − {pos}` (Remove position from Tres's set)
+     - `turn = ¬turn` (Toggle turn)
 
----
+3. **Tres's Move**:
+   - **Condition**: `turn ∧ ¬go ∧ pos ∈ F`
+   - **Effect**:
+     - `Tres = Tres ∪ {pos}` (Add position to Tres's set)
+     - `go = ¬go` (Toggle go)
 
-## **How to Apply**
-1. **Initialize a 4x4 grid** and define `P` (all possible positions).
-2. **Track player positions dynamically** using `Uno`, `Dos`, and `Tres` sets.
-3. **Implement turn-based logic** ensuring players follow move constraints.
-4. **Enforce game-over checks** after every move.
-5. **Display the game state** clearly, showing occupied and free positions.
-6. **End the game when a win condition is met** and display the result.
+### **Game Over Conditions**
+
+The `over` variable is true when any of the following occurs:
+- `Uno ∈ W` (Uno has achieved a winning pattern)
+- `Tres ∈ W` (Tres has achieved a winning pattern)
+- `F = ∅` (No free positions remain)
+
+### **Result Determination**
+- If `over ∧ Uno ∈ W`, then **Uno Wins**
+- If `over ∧ F = ∅`, then **Dos Wins**
+- If `over ∧ Tres ∈ W`, then **Tres Wins**
 
 ---
 
-> This message proves that this has been edited and used commit to apply changes.
+## **Turn-Based Gameplay Flow**
+
+1. **Initial State**: Game starts with Tres (first player since `turn = true` and `go = false`)
+2. **Regular Turn Cycle**:
+   - **Tres makes a move** (when `turn = true` and `go = false`)
+   - **Uno makes a move** (when `turn = true` and `go = true`)
+   - **Position removal** occurs (when `turn = false`)
+3. **Win Detection**: After each state transition, check if the game is over
+
+---
+
+## **Implementation Guidelines**
+
+1. **Data Structures**:
+   - Use arrays or sets to represent Uno, Tres, and free positions
+   - Track the game state using boolean variables as specified
+   - Store the winning patterns in a suitable data structure
+
+2. **Core Algorithms**:
+   - Implement the state transition logic exactly as specified
+   - Create efficient methods to check if a player has achieved a winning pattern
+   - Implement proper set operations (union, difference, membership testing)
+
+3. **User Interface**:
+   - Display the grid with clear visual distinction between Uno's and Tres's positions
+   - Indicate whose turn it is and what action is expected
+   - Show the game result clearly when the game ends
+
+---
+
+> This document serves as a comprehensive guide to the DSTRU-TAC-TOE game mechanics and implementation requirements.
 
