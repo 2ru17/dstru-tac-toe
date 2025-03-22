@@ -274,8 +274,33 @@ bool processMove(GameState *game, Position pos) {
  */
 // ASSIGNED TO: 2ru17
 bool checkWinCondition(const GameState *game, Position positions[], int count) {
-    // TODO: Check win condition
-    return 999;
+    // We need to check if any winning pattern in set W is a subset of the player's positions
+    for (int i = 0; i < wCount; i++) {
+        bool isWinning = true;
+        
+        // Check if all positions in this winning pattern are contained in player's positions
+        for (int j = 0; j < WINNING_SET_SIZE; j++) {
+            bool found = false;
+            for (int k = 0; k < count; k++) {
+                if (setW[i].positions[j].x == positions[k].x && 
+                    setW[i].positions[j].y == positions[k].y) {
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (!found) {
+                isWinning = false;
+                break;
+            }
+        }
+        
+        if (isWinning) {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 /**
@@ -286,9 +311,10 @@ bool checkWinCondition(const GameState *game, Position positions[], int count) {
  */
 // ASSIGNED TO: 2ru17
 bool isFEmpty(const GameState *game) {
-    // TODO: Check if F is empty
-    return 999;
+    // F is empty when the sum of Uno and Tres counts equals MAX_POSITIONS (16)
+    return (game->UnoCount + game->TresCount == MAX_POSITIONS);
 }
+
 
 /**
  * Update over variable and determine result
@@ -301,7 +327,29 @@ bool isFEmpty(const GameState *game) {
  */
 // ASSIGNED TO: 2ru17
 void updateGameOver(GameState *game) {
-    // TODO: Update game over status
+    // Check if Uno has won
+    bool unoWins = checkWinCondition(game, game->Uno, game->UnoCount);
+    
+    // Check if Tres has won
+    bool tresWins = checkWinCondition(game, game->Tres, game->TresCount);
+    
+    // Check if F is empty (all positions occupied)
+    bool fEmpty = isFEmpty(game);
+    
+    // Update over and result according to the rules
+    game->over = (unoWins || tresWins || fEmpty);
+    
+    if (game->over) {
+        if (unoWins) {
+            game->result = 1; // Uno Wins
+        } else if (fEmpty) {
+            game->result = 2; // Dos Wins
+        } else if (tresWins) {
+            game->result = 3; // Tres Wins
+        }
+    } else {
+        game->result = 0; // Game is still ongoing
+    }
 }
 
 /**
@@ -312,8 +360,33 @@ void updateGameOver(GameState *game) {
  * @param wCount Pointer to store the count of patterns in W
  */
 // ASSIGNED TO: 2ru17
- void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
-    // TODO: Calculate set W = C - T
+void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
+    // Initialize the count to 0
+    *wCount = 0;
+    
+    // For each pattern in C
+    for (int i = 0; i < 4; i++) {
+        bool includePattern = true;
+        
+        // Check if all positions in this pattern are related by T
+        // Since T is the identity relation, we need to find if any positions
+        // are different from each other
+        for (int j = 0; j < WINNING_SET_SIZE; j++) {
+            for (int k = j + 1; k < WINNING_SET_SIZE; k++) {
+                if (!isRelatedByT(C[i].positions[j], C[i].positions[k])) {
+                    includePattern = false;
+                    break;
+                }
+            }
+            if (!includePattern) break;
+        }
+        
+        // If not all positions are related by T, add to W
+        if (!includePattern) {
+            W[*wCount] = C[i];
+            (*wCount)++;
+        }
+    }
 }
 
 /**
