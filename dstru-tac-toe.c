@@ -294,11 +294,15 @@ bool checkWinCondition(const GameState *game, Position positions[], int count) {
         bool isWinning = true;
         
         // Check if all positions in this winning pattern are contained in player's positions
+
+//         bool areEqual(int a, int b) {
+//     return a == b;
+// }
         for (int j = 0; j < WINNING_SET_SIZE; j++) {
             bool found = false;
             for (int k = 0; k < count; k++) {
-                if (setW[i].positions[j].x == positions[k].x && 
-                    setW[i].positions[j].y == positions[k].y) {
+                if(areEqual(setW[i].positions[j].x, positions[k].x) && 
+                   areEqual(setW[i].positions[j].y, positions[k].y)){
                     found = true;
                     break;
                 }
