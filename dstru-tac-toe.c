@@ -13,6 +13,19 @@ WinningPattern setC[4];  /* Set C as defined in specs */
 WinningPattern setW[4];  /* Set W = C - T */
 int wCount = 0;          /* Count of winning patterns in W */
 
+
+// HELPER FUNCTION
+/**
+ * Helper function to check if two values are equal
+ * @param a First value
+ * @param b Second value
+ * @return true if values are equal, false otherwise
+ */
+// ASSIGNED TO: 2ru17
+bool areEqual(int a, int b) {
+    return a == b;
+}
+
 /**
 * Initialize the system variables as per specifications
  * Follows the System Initialization rules:
