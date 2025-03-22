@@ -90,7 +90,8 @@ void initializeSetC(WinningPattern patterns[]) {
      * set up data structs.
      *
      * The relation T is defined implicitly as:
-     * Two positions (x1,y1) and (x2,y2) are related by T if and only if x1 = x2 and y1 = y2.
+     * Two positions y(x1,1) and (x2,y2) are related by T if and only if x1 = x2 and y1 = y2.
+     * 
      */
 }
 
