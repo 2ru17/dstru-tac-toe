@@ -4,8 +4,7 @@
  * CCDSTRU '24-'25 Final Machine Project
  */
 
-// *Last edited by: janaquino8*
-// *Time edited (mm/dd/yy-hhmm): 03/20/25-2306*
+// *Last edited by: 2ru17*
 
 #include "dstru-tac-toe.h"
 
@@ -52,9 +51,33 @@ void initializeSetC(WinningPattern patterns[]) {
  * Initialize relation T on set A
  * T is a relation on A that is reflexive, symmetric, antisymmetric, and transitive
  */
-// ASSIGNED TO: 2ru17
-void initializeRelationT() {
-    // TODO: Initialize relation T
+ void initializeRelationT() {
+    /* 
+     * For a relation to be both symmetric and antisymmetric, it must be the identity relation
+     * (where each element is only related to itself), since:
+     * - Symmetric: If a T b, then b T a
+     * - Antisymmetric: If a T b and b T a, then a = b
+     * 
+     * Since the only way to satisfy both properties is when a = b, we'll define T
+     * as the identity relation on A = {1, 2, 3, 4}
+     * 
+     * This means T = {(1,1), (2,2), (3,3), (4,4)}
+     * 
+     * NOTE: This doesn't require an actual data structure in our implementation
+     * since we can check if two positions are related by T simply by checking if they're equal
+     * in the isRelatedByT function. But I documented this for clarity.
+     */
+    
+    /* 
+     * Since the relation T will be used by isRelatedByT function which checks if two positions
+     * are identical (same x and y coordinates), we don't need to explicitly store the relation.
+     * 
+     * This function serves to document the properties of T rather than
+     * set up data structs.
+     *
+     * The relation T is defined implicitly as:
+     * Two positions (x1,y1) and (x2,y2) are related by T if and only if x1 = x2 and y1 = y2.
+     */
 }
 
 /**
