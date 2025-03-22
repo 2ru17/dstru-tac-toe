@@ -51,6 +51,7 @@ void initializeSetC(WinningPattern patterns[]) {
  * Initialize relation T on set A
  * T is a relation on A that is reflexive, symmetric, antisymmetric, and transitive
  */
+ // ASSIGNED TO: 2ru17
  void initializeRelationT() {
     /* 
      * For a relation to be both symmetric and antisymmetric, it must be the identity relation
@@ -288,13 +289,11 @@ bool checkWinCondition(const GameState *game, Position positions[], int count) {
                     break;
                 }
             }
-            
             if (!found) {
                 isWinning = false;
                 break;
             }
         }
-        
         if (isWinning) {
             return true;
         }
@@ -338,7 +337,6 @@ void updateGameOver(GameState *game) {
     
     // Update over and result according to the rules
     game->over = (unoWins || tresWins || fEmpty);
-    
     if (game->over) {
         if (unoWins) {
             game->result = 1; // Uno Wins
@@ -367,7 +365,6 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
     // For each pattern in C
     for (int i = 0; i < 4; i++) {
         bool includePattern = true;
-        
         // Check if all positions in this pattern are related by T
         // Since T is the identity relation, we need to find if any positions
         // are different from each other
@@ -380,7 +377,6 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
             }
             if (!includePattern) break;
         }
-        
         // If not all positions are related by T, add to W
         if (!includePattern) {
             W[*wCount] = C[i];
