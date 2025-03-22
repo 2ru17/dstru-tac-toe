@@ -58,6 +58,7 @@ void initializeRelationT();
 /*********************************************
  * SET OPERATIONS AND POSITION FUNCTIONS
  *********************************************/
+bool areEqual(int a, int b);
 bool isPositionValid(Position pos);
 bool isPositionFree(const GameState *game, Position pos);
 bool isPositionInSet(Position pos, Position set[], int count);
