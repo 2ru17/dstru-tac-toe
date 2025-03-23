@@ -342,7 +342,7 @@ bool isSubset(Position set1[], int count1, Position set2[], int count2) {
 * Recalculates the free positions based on current Uno and Tres sets
 * @param game Pointer to the current game state
 */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 void updateFreePositions(GameState *game) {
     // TODO: Update free positions
     // PULL REQUEST ADDED
@@ -355,10 +355,15 @@ void updateFreePositions(GameState *game) {
  * @param pos2 Second position
  * @return true if pos1 is related to pos2 by T, false otherwise
  */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 bool isRelatedByT(Position pos1, Position pos2) {
     // TODO: Implement relation T (reflexive, symmetric, antisymmetric, transitive)
-    return 999;
+    bool related;
+    if (pos1.x == pos2.x && pos1.y == pos2.y)
+        related = true;
+    else
+        related = false;
+    return related;
 }
 
 /**
@@ -369,10 +374,26 @@ bool isRelatedByT(Position pos1, Position pos2) {
  * @param pos The position to occupy
  * @return true if move was successful, false otherwise
  */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 bool unoMove(GameState *game, Position pos) {
-    // TODO: Implement Uno move
-    return 999;
+    bool moved;
+    if (game->turn == true && game->go == true){
+        for (int i = 0; i < MAX_POSITIONS; i++){
+            if (pos.x == game->freePositions[i].x && pos.y == game->freePositions[i].y){
+                game->Uno[i].x = pos.x;
+                game->Uno[i].y = pos.y;
+                game->turn = false;
+                game->go = false;
+                moved = true;
+            }
+            else
+                moved = false;
+        }
+    }
+    else
+        moved = false;
+    
+    return moved;
 }
 
 /**
@@ -383,10 +404,27 @@ bool unoMove(GameState *game, Position pos) {
  * @param pos The position to occupy
  * @return true if move was successful, false otherwise
  */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 bool tresMove(GameState *game, Position pos) {
     // TODO: Implement Tres move
-    return 999;
+    
+    bool moved;
+    if (game->turn == true && game->go == false){
+        for (int i = 0; i < MAX_POSITIONS; i++){
+            if (pos.x == game->freePositions[i].x && pos.y == game->freePositions[i].y){
+                game->Tres[i].x = pos.x;
+                game->Tres[i].y = pos.y;
+                game->go = true;
+                moved = true;
+            }
+            else
+                moved = false;
+        }
+    }
+    else
+        moved = false;
+    
+    return moved;
 }
 
 /**
@@ -397,10 +435,61 @@ bool tresMove(GameState *game, Position pos) {
  * @param pos The position to remove
  * @return true if removal was successful, false otherwise
  */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 bool removePosition(GameState *game, Position pos) {
     // TODO: Implement position removal
-    return 999;
+    //IF WE WILL FOLLOW THE CONCEPT OF TRES & UNO ARE IN ONE SIMILAR POSITION, USE VER 1
+    //IF WE WILL FOLLOW THE CONCEPT OF DOS TAKES EITHER TRES OR UNO, USE VER 2
+
+    bool removed;
+    /*VER 1
+    if (game->turn == false && game->go == false){
+        for (int i = 0; i < MAX_POSITIONS; i++){
+            if (game->Uno[i].x == game->Tres[i].x && game->Uno[i].y == game->Tres[i].y){
+                game->Uno[i].x = 0;
+                game->Tres[i].x = 0;
+                game->Uno[i].y = 0;
+                game->Tres[i].y = 0;
+                game->turn == true;
+                removed = true;
+            }
+            else
+                removed = false;
+        }    
+    }
+
+    else
+        removed = false;
+    */
+    
+    //VER 2
+    if (game->turn == false && game->go == false){
+        for (int i = 0; i < MAX_POSITIONS; i++){
+            if (pos.x == game->Uno[i].x && pos.y == game->Uno[i].y){
+                game->Dos[i].x = pos.x;
+                game->Dos[i].y = pos.y;
+                game->Uno[i].x = 0; //resetting Uno Position
+                game->Uno[i].y = 0; //resetting Uno Position
+                game->turn = true;
+                removed = true;
+            }
+
+            else if (pos.x == game->Tres[i].x && pos.y == game->Tres[i].y){
+                game->Dos[i].x = pos.x;
+                game->Dos[i].y = pos.y;
+                game->Tres[i].x = 0; //resetting Tres Position
+                game->Tres[i].y = 0; //resetting Tres Position
+                game->turn = true;
+                removed = true;
+            }
+
+            else
+                removed = false;
+    }
+
+    else
+        removed = false;
+    return removed;
 }
 
 /**
@@ -410,7 +499,7 @@ bool removePosition(GameState *game, Position pos) {
  * @param pos The position selected
  * @return true if the move was processed successfully, false otherwise
  */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 bool processMove(GameState *game, Position pos) {
     // TODO: Process move according to system state
     return 999;
