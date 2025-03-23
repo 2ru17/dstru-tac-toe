@@ -82,6 +82,16 @@ void initializeGame(GameState *game) {
 // ASSIGNED TO: poginilance
 void initializeSetC(WinningPattern patterns[]) {
     // TODO: Initialize set C
+    for (int i = 0; i < 4; i++){
+        patterns[0].positions[i].x = 1;
+        patterns[0].positions[i].y = i + 1;
+        patterns[1].positions[i].x = i + 1;
+        patterns[1].positions[i].y = i + 1;
+        patterns[2].positions[i].x = i + 1;
+        patterns[2].positions[i].y = 4 - i;
+        patterns[3].positions[i].x = 4;
+        patterns[3].positions[i].y = i + 1;
+    }
 }
 
 /**
