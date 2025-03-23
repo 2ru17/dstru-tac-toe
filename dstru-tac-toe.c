@@ -60,6 +60,16 @@ void initializeGame(GameState *game) {
     game->go = false;
     game->over = false;
     game->result = 0;
+
+    //ADDED BY LANCE, INITIALIZING Position Uno[], Position Dos[], Position Tres[]
+    for (i = 0; i < MAX_POSITIONS; i++) {
+        game->Uno[i].x = 0;
+        game->Uno[i].y = 0;
+        game->Dos[i].x = 0;
+        game->Dos[i].y = 0;
+        game->Tres[i].x = 0;
+        game->Tres[i].y = 0;
+    }
 }
 // old code: 
 // void initializeGame(GameState *game) {
@@ -335,6 +345,7 @@ bool isSubset(Position set1[], int count1, Position set2[], int count2) {
 // ASSIGNED TO: poginilance
 void updateFreePositions(GameState *game) {
     // TODO: Update free positions
+    // PULL REQUEST ADDED
 }
 
 /**
