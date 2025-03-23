@@ -409,15 +409,11 @@ bool checkWinCondition(const GameState *game, Position positions[], int count) {
         bool isWinning = true;
         
         // Check if all positions in this winning pattern are contained in player's positions
-
-//         bool areEqual(int a, int b) {
-//     return a == b;
-// }
         for (int j = 0; j < WINNING_SET_SIZE; j++) {
             bool found = false;
             for (int k = 0; k < count; k++) {
-                if(areEqual(setW[i].positions[j].x, positions[k].x) && 
-                   areEqual(setW[i].positions[j].y, positions[k].y)){
+                if (areEqual(setW[i].positions[j].x, positions[k].x) && 
+                    areEqual(setW[i].positions[j].y, positions[k].y)) {
                     found = true;
                     break;
                 }
@@ -434,7 +430,6 @@ bool checkWinCondition(const GameState *game, Position positions[], int count) {
     
     return false;
 }
-
 /**
  * Check if F is empty
  * F is empty when all positions are occupied by either Uno or Tres
@@ -499,18 +494,20 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
     for (int i = 0; i < 4; i++) {
         bool includePattern = true;
         // Check if all positions in this pattern are related by T
-        // Since T is the identity relation, we need to find if any positions
-        // are different from each other
         for (int j = 0; j < WINNING_SET_SIZE; j++) {
             for (int k = j + 1; k < WINNING_SET_SIZE; k++) {
-                if (!isRelatedByT(C[i].positions[j], C[i].positions[k])) {
+                // For a position to be related by T, they must be the same position
+                // If any two positions in the pattern are NOT the same, we include the pattern in W
+                if (C[i].positions[j].x != C[i].positions[k].x || 
+                    C[i].positions[j].y != C[i].positions[k].y) {
                     includePattern = false;
                     break;
                 }
             }
             if (!includePattern) break;
         }
-        // If not all positions are related by T, add to W
+        
+        // If the pattern has different positions (not all related by T), add to W
         if (!includePattern) {
             W[*wCount] = C[i];
             (*wCount)++;
