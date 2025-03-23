@@ -4,7 +4,7 @@
  * CCDSTRU '24-'25 Final Machine Project
  */
 
-// *Last edited by: janaquino8*
+// *Last edited by: 2ru17*
 
 #include "dstru-tac-toe.h"
 
@@ -39,15 +39,39 @@ bool areEqual(int a, int b) {
  */
 // ASSIGNED TO: janaquino8
 void initializeGame(GameState *game) {
-     // TODO: Initialize game state according to System Initialization
-     game->UnoCount = 0;
-     game->DosCount = 0;
-     game->TresCount = 0;
-     
+    // Initialize all counts to zero
+    game->UnoCount = 0;
+    game->DosCount = 0;
+    game->TresCount = 0;
+    game->freeCount = MAX_POSITIONS;  // Initialize free count to max
+    
+    // Initialize all positions as free
+    int i, j, pos = 0;
+    for (i = 1; i <= 4; i++) {
+        for (j = 1; j <= 4; j++) {
+            game->freePositions[pos].x = i;
+            game->freePositions[pos].y = j;
+            pos++;
+        }
+    }
+    
+    // Initialize system variables
     game->turn = true;
     game->go = false;
     game->over = false;
+    game->result = 0;
 }
+// old code: 
+// void initializeGame(GameState *game) {
+//     // TODO: Initialize game state according to System Initialization
+//     game->UnoCount = 0;
+//     game->DosCount = 0;
+//     game->TresCount = 0;
+    
+//    game->turn = true;
+//    game->go = false;
+//    game->over = false;
+// }
 
 /**
  * Initialize set C (winning patterns)
@@ -120,25 +144,50 @@ bool isPositionValid(Position pos) {
  */
 // ASSIGNED TO: janaquino8
 bool isPositionFree(const GameState *game, Position pos) {
-    // TODO: Check if position is free
-    int i = 0,
-        j = 0;
-        bool isFree = true;
+    // Check if position is in Uno set
+    int i = 0;
+    bool isFree = true;
         
-    while (isFree && i < game->UnoCount)
+    // Check if position is in Uno
+    while (isFree && i < game->UnoCount) {
         if (game->Uno[i].x == pos.x && game->Uno[i].y == pos.y)
             isFree = false;
         else
             i++;
+    }
     
-    while (isFree && j < game->DosCount)
-        if (game->Dos[j].x == pos.x && game->Dos[j].y == pos.y)
+    // Check if position is in Tres (not Dos - this was an error)
+    i = 0;
+    while (isFree && i < game->TresCount) {
+        if (game->Tres[i].x == pos.x && game->Tres[i].y == pos.y)
             isFree = false;
         else
-            j++;
+            i++;
+    }
 
     return isFree;
 }
+// old code:
+// bool isPositionFree(const GameState *game, Position pos) {
+//     // TODO: Check if position is free
+//     int i = 0,
+//         j = 0;
+//         bool isFree = true;
+        
+//     while (isFree && i < game->UnoCount)
+//         if (game->Uno[i].x == pos.x && game->Uno[i].y == pos.y)
+//             isFree = false;
+//         else
+//             i++;
+    
+//     while (isFree && j < game->DosCount)
+//         if (game->Dos[j].x == pos.x && game->Dos[j].y == pos.y)
+//             isFree = false;
+//         else
+//             j++;
+
+//     return isFree;
+// }
 
 /**
  * Check if position is in a set
@@ -155,7 +204,7 @@ bool isPositionInSet(Position pos, Position set[], int count) {
 
     while (isPresent == false && i < count)
         if (set[i].x == pos.x && set[i].y == pos.y)
-            isPresent == true;
+            isPresent = true;  // FIXED: Changed == to = (assignment not comparison)
         else
             i++;
 
@@ -183,19 +232,41 @@ void addPositionToSet(Position pos, Position set[], int *count) {
  */
 // ASSIGNED TO: janaquino8
 void removePositionFromSet(Position pos, Position set[], int *count) {
-    // TODO: Remove position from set
-    int i - 0;
+    int i = 0;  // FIXED: Changed - to = (assignment)
 
-    while (set[i] != pos && i < *count)
+    // Find the position in the set
+    while (i < *count) {
+        // FIXED: Cannot directly compare structs
+        if (set[i].x == pos.x && set[i].y == pos.y)
+            break;
         i++;
+    }
 
-    if (i < *count)
-    {
-        while (i < *count - 1)
+    // If position was found (i < *count), remove it
+    if (i < *count) {
+        // Shift all elements after the removed one
+        while (i < *count - 1) {
             set[i] = set[i + 1];
+            i++;
+        }
         (*count)--;
     }
 }
+// old code:
+// void removePositionFromSet(Position pos, Position set[], int *count) {
+//     // TODO: Remove position from set
+//     int i - 0;
+
+//     while (set[i] != pos && i < *count)
+//         i++;
+
+//     if (i < *count)
+//     {
+//         while (i < *count - 1)
+//             set[i] = set[i + 1];
+//         (*count)--;
+//     }
+// }
 
 /**
  * Check if set1 is a subset of set2
@@ -207,24 +278,44 @@ void removePositionFromSet(Position pos, Position set[], int *count) {
  */
 // ASSIGNED TO: janaquino8
 bool isSubset(Position set1[], int count1, Position set2[], int count2) {
-    // TODO: Check if set1 is subset of set2
-    int i,
-        j,
-        ctr = 0;
+    int i, j, ctr = 0;
 
-    for (i = 0; i < count1; i++)
-    {
+    for (i = 0; i < count1; i++) {
         j = 0;
+        bool found = false;
         
-        while (set2[j] != count1[i] && j < count2)
+        // FIXED: Changed count1[i] to set1[i]
+        while (j < count2 && !found) {
+            if (set2[j].x == set1[i].x && set2[j].y == set1[i].y) {
+                found = true;
+                ctr++;
+            }
             j++;
-        
-        if (j < count2)
-            ctr++;
+        }
     }
 
     return ctr == count1;
 }
+// old code: 
+// bool isSubset(Position set1[], int count1, Position set2[], int count2) {
+//     // TODO: Check if set1 is subset of set2
+//     int i,
+//         j,
+//         ctr = 0;
+
+//     for (i = 0; i < count1; i++)
+//     {
+//         j = 0;
+        
+//         while (set2[j] != count1[i] && j < count2)
+//             j++;
+        
+//         if (j < count2)
+//             ctr++;
+//     }
+
+//     return ctr == count1;
+// }
 
 /**
 * Update the set F = P - (Uno U Tres)
@@ -436,16 +527,30 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
  */
 // ASSIGNED TO: janaquino8
 void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token) {
-    int i, x, y;
+    int i;
 
-    for (i = 0; i < count; i++)
-    {
-        x = Player[i].x;
-        y = Player[i].y;
-
-        grid[x][y] = token;
+    for (i = 0; i < count; i++) {
+        // Adjusting indices for 0-based array access
+        int x = Player[i].x - 1;
+        int y = Player[i].y - 1;
+        
+        if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE) {
+            grid[x][y] = token;
+        }
     }
 }
+// old code:
+// void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token) {
+//     int i, x, y;
+
+//     for (i = 0; i < count; i++)
+//     {
+//         x = Player[i].x;
+//         y = Player[i].y;
+
+//         grid[x][y] = token;
+//     }
+// }
 
 /**
  * Display the current game state
@@ -454,29 +559,119 @@ void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token)
  */
 // ASSIGNED TO: janaquino8
 void displayGameState(const GameState *game) {
-    // TODO: Display game state
-    int i, j, grid[GRID_SIZE][GRID_SIZE] = {0};
+    int i, j;
+    int grid[GRID_SIZE][GRID_SIZE] = {0};
 
-    printInGrid(Uno, UnoCount, grid, 1);
-    printInGrid(Tres, TresCount, grid, 3);
+    // FIXED: Added game-> to access the struct fields
+    printInGrid(game->Uno, game->UnoCount, grid, 1);
+    printInGrid(game->Tres, game->TresCount, grid, 3);
 
-    printf("GRID:\n\n");
-
-    for (i = 0; i < GRID_SIZE, i++)
-    {
-        for (j = 0; j < GRID_SIZE; j++)
-        {
-            printf("%d", grid[i][j]);
+    printf("\n=== CURRENT GAME STATE ===\n\n");
+    
+    // Print column headers
+    printf("    ");
+    for (j = 1; j <= GRID_SIZE; j++) {
+        printf(" %d  ", j);
+    }
+    printf("\n");
+    
+    // Print grid
+    for (i = 0; i < GRID_SIZE; i++) {
+        // Print row number
+        printf(" %d  ", i + 1);
+        
+        // FIXED: Changed comma to semicolon in the for loop
+        for (j = 0; j < GRID_SIZE; j++) {
+            char symbol;
+            switch(grid[i][j]) {
+                case 1: symbol = 'X'; break;  // Uno
+                case 3: symbol = 'O'; break;  // Tres
+                default: symbol = ' '; break; // Empty
+            }
+            printf("[%c]", symbol);
+            
             if (j < GRID_SIZE - 1)
-                printf(" ~ ");
+                printf(" ");
         }
         printf("\n");
-
+        
         if (i < GRID_SIZE - 1)
-            printf("~ ~ ~ ~ ~ ~ ~\n"); //(can be improved for readability)
+            printf("    ---------------\n");  // Improved readability
     }
-
-    printf("\nTURN: %c\n", turn ? 'T' : 'F');
-    printf("GO: %s\n", turn ? "Uno" : "False");
-    printf("OVER: %c\n", over ? 'T' : 'F');
+    
+    printf("\nGame Status:\n");
+    // FIXED: Corrected display of turn and go values
+    printf("Turn: %s\n", game->turn ? "Player's Turn" : "Removal Turn");
+    printf("Go: %s\n", game->go ? "Uno's Turn" : "Tres's Turn");
+    printf("Over: %s\n", game->over ? "Yes" : "No");
+    
+    if (game->over) {
+        printf("Result: ");
+        switch (game->result) {
+            case 1: printf("Uno Wins!\n"); break;
+            case 2: printf("Dos Wins!\n"); break;
+            case 3: printf("Tres Wins!\n"); break;
+            default: printf("Undetermined\n"); break;
+        }
+    }
+    printf("\n");
 }
+// old code:
+// void displayGameState(const GameState *game) {
+//     int i, j;
+//     int grid[GRID_SIZE][GRID_SIZE] = {0};
+
+//     // FIXED: Added game-> to access the struct fields
+//     printInGrid(game->Uno, game->UnoCount, grid, 1);
+//     printInGrid(game->Tres, game->TresCount, grid, 3);
+
+//     printf("\n=== CURRENT GAME STATE ===\n\n");
+    
+//     // Print column headers
+//     printf("    ");
+//     for (j = 1; j <= GRID_SIZE; j++) {
+//         printf(" %d  ", j);
+//     }
+//     printf("\n");
+    
+//     // Print grid
+//     for (i = 0; i < GRID_SIZE; i++) {
+//         // Print row number
+//         printf(" %d  ", i + 1);
+        
+//         // FIXED: Changed comma to semicolon in the for loop
+//         for (j = 0; j < GRID_SIZE; j++) {
+//             char symbol;
+//             switch(grid[i][j]) {
+//                 case 1: symbol = 'X'; break;  // Uno
+//                 case 3: symbol = 'O'; break;  // Tres
+//                 default: symbol = ' '; break; // Empty
+//             }
+//             printf("[%c]", symbol);
+            
+//             if (j < GRID_SIZE - 1)
+//                 printf(" ");
+//         }
+//         printf("\n");
+        
+//         if (i < GRID_SIZE - 1)
+//             printf("    ---------------\n");  // Improved readability
+//     }
+    
+//     printf("\nGame Status:\n");
+//     // FIXED: Corrected display of turn and go values
+//     printf("Turn: %s\n", game->turn ? "Player's Turn" : "Removal Turn");
+//     printf("Go: %s\n", game->go ? "Uno's Turn" : "Tres's Turn");
+//     printf("Over: %s\n", game->over ? "Yes" : "No");
+    
+//     if (game->over) {
+//         printf("Result: ");
+//         switch (game->result) {
+//             case 1: printf("Uno Wins!\n"); break;
+//             case 2: printf("Dos Wins!\n"); break;
+//             case 3: printf("Tres Wins!\n"); break;
+//             default: printf("Undetermined\n"); break;
+//         }
+//     }
+//     printf("\n");
+// }
