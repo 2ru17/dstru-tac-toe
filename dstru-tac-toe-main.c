@@ -7,7 +7,7 @@
 int main() {
     GameState game;
     Position movePosition;
-    WinningPattern patterns[76]; // Holds all winning patterns
+    WinningPattern patterns[4]; // FIXED: Changed to 4 as there are only 4 winning patterns defined
     bool validInput = false;
     
     // Initialize the game
