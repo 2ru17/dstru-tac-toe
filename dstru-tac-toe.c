@@ -346,8 +346,8 @@ bool isSubset(Position set1[], int count1, Position set2[], int count2) {
 void updateFreePositions(GameState *game) {
     // TODO: Update free positions
     // PULL REQUEST ADDED
-    game->freeCount = 16; //re-initializing these variables everytime func call since rechecking everything again every func call
-    game->UnoCount = 0;
+    game->freeCount = 16; //re-initializing these variables everytime func call 
+    game->UnoCount = 0; //since rechecking everything again every func call
     game->TresCount = 0;
 
     for (int i = 0; i < MAX_POSITIONS; i++){
