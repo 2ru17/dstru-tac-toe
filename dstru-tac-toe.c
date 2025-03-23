@@ -79,7 +79,7 @@ void initializeGame(GameState *game) {
  *       {(1,4),(2,3),(3,2),(4,1)}, {(4,1),(4,2),(4,3),(4,4)} }
  * @param patterns Array to store the winning patterns
  */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 void initializeSetC(WinningPattern patterns[]) {
     // TODO: Initialize set C
     for (int i = 0; i < 4; i++){
@@ -332,9 +332,35 @@ bool isSubset(Position set1[], int count1, Position set2[], int count2) {
 * Recalculates the free positions based on current Uno and Tres sets
 * @param game Pointer to the current game state
 */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 void updateFreePositions(GameState *game) {
-    // TODO: Update free positions
+    // TODO: Update free positions\
+    game->freeCount = 16;
+    game->UnoCount = 0;
+    game->TresCount = 0;
+
+    for (int i = 0; i < MAX_POSITIONS; i++){
+        for (int j = 0; j < MAX_POSITIONS; j++){
+            if (game->Uno[i].x == game->freePositions[j].x){
+                if(game->Uno[i].y == game->freePositions[j].y){
+                    game->freePositions[j].x = 0; //0 means not part of set anymore / not free anymore
+                    game->freePositions[j].y = 0;
+                    game->UnoCount++;
+                    game->freeCount--;
+                }
+            }
+            else if (game->Tres[i].x == game->freePositions[j].x){
+                if(game->Tres[i].y == game->freePositions[j].y){
+                    game->freePositions[j].x = 0; //0 means not part of set anymore / not free anymore
+                    game->freePositions[j].y = 0;
+                    game->TresCount++;
+                    game->freeCount--;
+                }
+            }            
+        }
+    }
+
+    
 }
 
 /**
