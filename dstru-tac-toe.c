@@ -4,7 +4,7 @@
  * CCDSTRU '24-'25 Final Machine Project
  */
 
-// *Last edited by: 2ru17*
+// *Last edited by: janaquino8*
 
 #include "dstru-tac-toe.h"
 
@@ -171,6 +171,8 @@ bool isPositionInSet(Position pos, Position set[], int count) {
 // ASSIGNED TO: janaquino8
 void addPositionToSet(Position pos, Position set[], int *count) {
     // TODO: Add position to set
+    set[*count] = pos;
+    (*count)++;
 }
 
 /**
@@ -182,6 +184,17 @@ void addPositionToSet(Position pos, Position set[], int *count) {
 // ASSIGNED TO: janaquino8
 void removePositionFromSet(Position pos, Position set[], int *count) {
     // TODO: Remove position from set
+    int i - 0;
+
+    while (set[i] != pos && i < *count)
+        i++;
+
+    if (i < *count)
+    {
+        while (i < *count - 1)
+            set[i] = set[i + 1];
+        (*count)--;
+    }
 }
 
 /**
@@ -195,11 +208,22 @@ void removePositionFromSet(Position pos, Position set[], int *count) {
 // ASSIGNED TO: janaquino8
 bool isSubset(Position set1[], int count1, Position set2[], int count2) {
     // TODO: Check if set1 is subset of set2
-    int i = 0,
-        j = 0,
+    int i,
+        j,
         ctr = 0;
 
-    return 999;
+    for (i = 0; i < count1; i++)
+    {
+        j = 0;
+        
+        while (set2[j] != count1[i] && j < count2)
+            j++;
+        
+        if (j < count2)
+            ctr++;
+    }
+
+    return ctr == count1;
 }
 
 /**
@@ -404,6 +428,26 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
 }
 
 /**
+ * Assigns placements in grid depending on the position of each player
+ * @param Player Array of the positions occupied by the player
+ * @param count The number of occupied positions of the player
+ * @param grid The grid of the placements of each player
+ * @param token The token representing the number of the player
+ */
+// ASSIGNED TO: janaquino8
+void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token) {
+    int i, x, y;
+
+    for (i = 0; i < count; i++)
+    {
+        x = Player[i].x;
+        y = Player[i].y;
+
+        grid[x][y] = token;
+    }
+}
+
+/**
  * Display the current game state
  * Shows the grid with occupied positions and current game status
  * @param game The current game state
@@ -411,4 +455,28 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
 // ASSIGNED TO: janaquino8
 void displayGameState(const GameState *game) {
     // TODO: Display game state
+    int i, j, grid[GRID_SIZE][GRID_SIZE] = {0};
+
+    printInGrid(Uno, UnoCount, grid, 1);
+    printInGrid(Tres, TresCount, grid, 3);
+
+    printf("GRID:\n\n");
+
+    for (i = 0; i < GRID_SIZE, i++)
+    {
+        for (j = 0; j < GRID_SIZE; j++)
+        {
+            printf("%d", grid[i][j]);
+            if (j < GRID_SIZE - 1)
+                printf(" ~ ");
+        }
+        printf("\n");
+
+        if (i < GRID_SIZE - 1)
+            printf("~ ~ ~ ~ ~ ~ ~\n"); //(can be improved for readability)
+    }
+
+    printf("\nTURN: %c\n", turn ? 'T' : 'F');
+    printf("GO: %s\n", turn ? "Uno" : "False");
+    printf("OVER: %c\n", over ? 'T' : 'F');
 }

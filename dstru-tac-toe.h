@@ -4,7 +4,6 @@
  * CCDSTRU '24-'25 Final Machine Project
  */
 // *Last edited by: janaquino8*
-// *Time edited (mm/dd/yy-hhmm): 03/20/25-2306*
 
 #ifndef DSTRU_TAC_TOE_H
 #define DSTRU_TAC_TOE_H
@@ -29,7 +28,7 @@ typedef struct {
     /* Sets of positions */
     Position Uno[MAX_POSITIONS];     /* Positions occupied by Uno */
     int UnoCount;                    /* Number of positions in Uno */
-    Position Dos[MAX_POSITIONS];     /* Positions occupied by Dos */
+    Position Dos[MAX_POSITIONS];     /* Positions occupied by Dos */ // (REMOVE?)
     int DosCount;                    /* Number of positions in Dos */
     Position Tres[MAX_POSITIONS];    /* Positions occupied by Tres */
     int TresCount;                   /* Number of positions in Tres */
@@ -87,6 +86,7 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount);
 /*********************************************
  * DISPLAY AND USER INTERFACE FUNCTIONS
  *********************************************/
+void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token);
 void displayGameState(const GameState *game);
 
 #endif /* DSTRU_TAC_TOE_H */
