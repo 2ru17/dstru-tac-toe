@@ -7,8 +7,9 @@
 int main() {
     GameState game;
     Position movePosition;
-    WinningPattern patterns[4]; // FIXED: Changed to 4 as there are only 4 winning patterns defined
+    WinningPattern patterns[4];
     bool validInput = false;
+    char buffer[100]; // Buffer for input handling
     
     // Initialize the game
     initializeGame(&game);
@@ -16,14 +17,31 @@ int main() {
     initializeRelationT();
     
     // Game introduction
-    printf("=== DSTRU-TAC-TOE ===\n");
-    printf("4x4 Tic-Tac-Toe with Set Theory Implementation\n");
-    printf("Players: Uno (X), Dos (removal), Tres (O)\n\n");
+    printf("\n\n");
+    printf("=======================================\n");
+    printf("=          DSTRU-TAC-TOE             =\n");
+    printf("=======================================\n");
+    printf("A 4x4 Tic-Tac-Toe with Set Theory Implementation\n\n");
+    printf("PLAYERS:\n");
+    printf("  - Uno (X): Places X markers\n");
+    printf("  - Dos (R): Removes any marker from the board\n");
+    printf("  - Tres (O): Places O markers\n\n");
+    
+    printf("WINNING CONDITIONS:\n");
+    printf("  - Uno wins: Creating a winning pattern with X markers\n");
+    printf("  - Dos wins: If the board is filled with no winner\n");
+    printf("  - Tres wins: Creating a winning pattern with O markers\n\n");
+    
+    printf("Press Enter to start...");
+    getchar(); // Wait for user input before starting
     
     // Main game loop
     while (!game.over) {
         // Display current game state
         displayGameState(&game);
+        
+        // Clear input buffer before prompting
+        fflush(stdin);
         
         // Determine current player and prompt for move
         if (game.turn) {
@@ -37,9 +55,10 @@ int main() {
             validInput = false;
             while (!validInput) {
                 if (scanf("%d %d", &movePosition.x, &movePosition.y) != 2) {
-                    printf("Invalid input. Please enter two numbers.\n");
+                    printf("Invalid input. Please enter two numbers (e.g., 1 3).\n");
                     // Clear input buffer
                     while (getchar() != '\n');
+                    printf("Try again: ");
                     continue;
                 }
                 
@@ -63,9 +82,10 @@ int main() {
             validInput = false;
             while (!validInput) {
                 if (scanf("%d %d", &movePosition.x, &movePosition.y) != 2) {
-                    printf("Invalid input. Please enter two numbers.\n");
+                    printf("Invalid input. Please enter two numbers (e.g., 2 4).\n");
                     // Clear input buffer
                     while (getchar() != '\n');
+                    printf("Try again: ");
                     continue;
                 }
                 
@@ -84,9 +104,15 @@ int main() {
             }
         }
         
+        // Clear input buffer after getting valid input
+        while (getchar() != '\n');
+        
         // Process the move
         if (!processMove(&game, movePosition)) {
             printf("Invalid move. Please try again.\n");
+            // Give the user time to read the error message
+            printf("Press Enter to continue...");
+            getchar();
             continue;
         }
         
@@ -97,20 +123,28 @@ int main() {
     // Display final game state
     displayGameState(&game);
     
-    // Announce results
+    // Announce results with more detailed messages
+    printf("\n=======================================\n");
+    printf("=            GAME OVER               =\n");
+    printf("=======================================\n\n");
+    
     switch (game.result) {
         case 1:
-            printf("Uno wins!\n");
+            printf("Uno (X) wins! Successfully created a winning pattern.\n");
             break;
         case 2:
-            printf("Dos wins!\n");
+            printf("Dos (Removal) wins! The board is full with no winning pattern.\n");
             break;
         case 3:
-            printf("Tres wins!\n");
+            printf("Tres (O) wins! Successfully created a winning pattern.\n");
             break;
         default:
-            printf("Game ended without a winner.\n");
+            printf("Game ended without a winner. This should not happen!\n");
     }
+    
+    printf("\nThanks for playing DSTRU-TAC-TOE!\n");
+    printf("Press Enter to exit...");
+    getchar();
     
     return 0;
 }
