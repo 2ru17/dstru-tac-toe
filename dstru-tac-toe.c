@@ -345,32 +345,20 @@ bool isSubset(Position set1[], int count1, Position set2[], int count2) {
 // ASSIGNED TO: lance203
 void updateFreePositions(GameState *game) {
     // TODO: Update free positions
-    // PULL REQUEST ADDED
-    game->freeCount = 16; //re-initializing these variables everytime func call 
-    game->UnoCount = 0; //since rechecking everything again every func call
-    game->TresCount = 0;
-
-    for (int i = 0; i < MAX_POSITIONS; i++){
-        for (int j = 0; j < MAX_POSITIONS; j++){
-            if (game->Uno[i].x == game->freePositions[j].x){
-                if(game->Uno[i].y == game->freePositions[j].y){
-                    game->freePositions[j].x = -1; //-1 means not part of set anymore / not free anymore
-                    game->freePositions[j].y = -1;
-                    game->UnoCount++;
-                    game->freeCount--;
+    game->freeCount = 0;
+    Position pos;
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            pos.x = i;
+            pos.y = j;
+            if (isPositionFree(game, pos){
+                game->freePositions[game->freeCount].x = pos.x;
+                game->freePositions[game->freeCount].y = pos.y;
+                game->freeCount++;
                 }
-            }
-            else if (game->Tres[i].x == game->freePositions[j].x){
-                if(game->Tres[i].y == game->freePositions[j].y){
-                    game->freePositions[j].x = -1; //-1 means not part of set anymore / not free anymore
-                    game->freePositions[j].y = -1;
-                    game->TresCount++;
-                    game->freeCount--;
-                }
-            }            
+            }           
         }
     }
-}
 
 /**
  * Check if positions are related by relation T
@@ -401,19 +389,12 @@ bool isRelatedByT(Position pos1, Position pos2) {
 // ASSIGNED TO: lance203
 bool unoMove(GameState *game, Position pos) {
     bool moved;
-    if (game->turn == true && game->go == true){
-        for (int i = 0; i < MAX_POSITIONS; i++){
-            if (pos.x == game->freePositions[i].x && pos.y == game->freePositions[i].y){
-                game->Uno[i].x = pos.x;
-                game->Uno[i].y = pos.y;
+    if (game->turn == true && game->go == true && isPositionValid(pos) == true && isPositionFree(game, pos) == true){
+                addPositionToSet(pos, game->Uno, &(game->UnoCount));
                 game->turn = false;
                 game->go = false;
                 moved = true;
             }
-            else
-                moved = false;
-        }
-    }
     else
         moved = false;
     
@@ -431,20 +412,12 @@ bool unoMove(GameState *game, Position pos) {
 // ASSIGNED TO: lance203
 bool tresMove(GameState *game, Position pos) {
     // TODO: Implement Tres move
-    
     bool moved;
-    if (game->turn == true && game->go == false){
-        for (int i = 0; i < MAX_POSITIONS; i++){
-            if (pos.x == game->freePositions[i].x && pos.y == game->freePositions[i].y){
-                game->Tres[i].x = pos.x;
-                game->Tres[i].y = pos.y;
+    if (game->turn == true && game->go == false && isPositionValid(pos) == true && isPositionFree(game, pos) == true){
+                addPositionToSet(pos, game->Tres, &(game->TresCount));
                 game->go = true;
                 moved = true;
             }
-            else
-                moved = false;
-        }
-    }
     else
         moved = false;
     
@@ -488,21 +461,16 @@ bool removePosition(GameState *game, Position pos) {
     
     //VER 2
     if (game->turn == false && game->go == false){
-        for (int i = 0; i < MAX_POSITIONS; i++){
-            if (pos.x == game->Uno[i].x && pos.y == game->Uno[i].y){
-                game->Dos[i].x = pos.x;
-                game->Dos[i].y = pos.y;
-                game->Uno[i].x = 0; //resetting Uno Position
-                game->Uno[i].y = 0; //resetting Uno Position
+            if (isPositionInSet(pos, game->Uno, game->UnoCount) == true){
+                removePositionFromSet(pos, game->Uno, &(game->UnoCount));
+                addPositionToSet(pos, game->Dos, &(game->DosCount));
                 game->turn = true;
                 removed = true;
             }
-
-            else if (pos.x == game->Tres[i].x && pos.y == game->Tres[i].y){
-                game->Dos[i].x = pos.x;
-                game->Dos[i].y = pos.y;
-                game->Tres[i].x = 0; //resetting Tres Position
-                game->Tres[i].y = 0; //resetting Tres Position
+            
+            else if (isPositionInSet(pos, game->Tres, game->TresCount) == true){
+                removePositionFromSet(pos, game->Tres, &(game->TresCount));
+                addPositionToSet(pos, game->Dos, &(game->DosCount));
                 game->turn = true;
                 removed = true;
             }
@@ -510,7 +478,6 @@ bool removePosition(GameState *game, Position pos) {
             else
                 removed = false;
     }
-
     else
         removed = false;
     return removed;
@@ -526,7 +493,12 @@ bool removePosition(GameState *game, Position pos) {
 // ASSIGNED TO: lance203
 bool processMove(GameState *game, Position pos) {
     // TODO: Process move according to system state
-    return 999;
+    bool process;
+    if (tresMove(game, pos) == true || unoMove(game, pos) == true || removePosition(game, pos) == true)
+        process = true;
+    else
+        process = false;
+    return process;
 }
 
 /**
