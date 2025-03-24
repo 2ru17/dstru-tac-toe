@@ -95,9 +95,9 @@ void initializeSetC(WinningPattern patterns[]) {
         patterns[0].positions[i].x = 1;       // hori top x
         patterns[0].positions[i].y = i + 1;    // hori top y
         patterns[1].positions[i].x = i + 1;    // Diag x
-        patterns[1].positions[i].x = i + 1;    // Diag y
+        patterns[1].positions[i].y = i + 1;    // Diag y
         patterns[2].positions[i].x = i + 1;    // Anti diag x
-        patterns[2].positions[i].y = 4 - i    // anti diag y
+        patterns[2].positions[i].y = 4 - i;    // anti diag y
         patterns[3].positions[i].x = 4;       // hori bot x
         patterns[3].positions[i].y = i + 1;    // hori bot y
     }
