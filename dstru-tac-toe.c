@@ -88,17 +88,22 @@ void initializeGame(GameState *game) {
  *       {(1,4),(2,3),(3,2),(4,1)}, {(4,1),(4,2),(4,3),(4,4)} }
  * @param patterns Array to store the winning patterns
  */
-// ASSIGNED TO: poginilance
+// ASSIGNED TO: lance203
 void initializeSetC(WinningPattern patterns[]) {
     // TODO: Initialize set C
     for (int i = 0; i < 4; i++){
         patterns[0].positions[i].x = 1;
         patterns[0].positions[i].y = i + 1;
         patterns[1].positions[i].x = i + 1;
+        patterns[1].positions[i].x = i + 1;   // Diag to remove x
+        patterns[1].positions[i].y = i + 1;   // Diag to remove y
         patterns[1].positions[i].y = 4 - i;
         patterns[2].positions[i].x = 4;
         patterns[2].positions[i].y = i + 1;
     }
+    // ADDED By 2ru17
+    // Calculate the W set (should exclude the diagonal pattern index 1)
+    calculateSetW(patterns, setW, &wCount);
 }
 
 /**
@@ -284,21 +289,25 @@ bool isSubset(Position set1[], int count1, Position set2[], int count2) {
 */
 // ASSIGNED TO: lance203
 void updateFreePositions(GameState *game) {
-    // TODO: Update free positions
+    // Reset free positions
     game->freeCount = 0;
-    Position pos;
-    for (int i = 0; i < 4; i++){
-        for (int j = 0; j < 4; j++){
-            pos.x = i;
-            pos.y = j;
+    
+    // Check each position in the 4x4 grid
+    // MODIFIED By 2ru17
+    /*
+    This one uses 0-3 for position coordinates, but the valid range is 1-4
+    */
+    for (int i = 1; i <= 4; i++) {
+        for (int j = 1; j <= 4; j++) {
+            Position pos = {i, j};
+            // If position is not in Uno or Tres, add to free positions
             if (isPositionFree(game, pos)) {
-                game->freePositions[game->freeCount].x = pos.x;
-                game->freePositions[game->freeCount].y = pos.y;
+                game->freePositions[game->freeCount] = pos;
                 game->freeCount++;
-                }
-            }           
+            }
         }
     }
+}
 
 /**
  * Check if positions are related by relation T
@@ -410,13 +419,31 @@ bool removePosition(GameState *game, Position pos) {
  */
 // ASSIGNED TO: lance203
 bool processMove(GameState *game, Position pos) {
-    // TODO: Process move according to system state
-    bool process;
-    if (tresMove(game, pos) == true || unoMove(game, pos) == true || removePosition(game, pos) == true)
-        process = true;
-    else
-        process = false;
-    return process;
+    // First check if position is valid
+    if (!isPositionValid(pos)) {
+        return false;
+    }
+    
+    bool success = false;
+    
+    // Check game state and apply appropriate move
+    if (game->turn && game->go) {
+        // Uno's turn (U)
+        success = unoMove(game, pos);
+    } else if (game->turn && !game->go) {
+        // Tres's turn (T)
+        success = tresMove(game, pos);
+    } else if (!game->turn) {
+        // Dos's turn (removal)
+        success = removePosition(game, pos);
+    }
+    
+    // Update free positions after successful move
+    if (success) {
+        updateFreePositions(game);
+    }
+    
+    return success;
 }
 
 /**
@@ -514,29 +541,20 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
     // Initialize the count to 0
     *wCount = 0;
     
-    // For each pattern in C
+    // For each pattern in C (4 patterns)
     for (int i = 0; i < 4; i++) {
-        bool includePattern = true;
-        // Check if all positions in this pattern are related by T
-        for (int j = 0; j < WINNING_SET_SIZE; j++) {
-            for (int k = j + 1; k < WINNING_SET_SIZE; k++) {
-                // For a position to be related by T, they must be the same position
-                // If any two positions in the pattern are NOT the same, we include the pattern in W
-                if (C[i].positions[j].x != C[i].positions[k].x || 
-                    C[i].positions[j].y != C[i].positions[k].y) {
-                    includePattern = false;
-                    break;
-                }
-            }
-            if (!includePattern) break;
+        // Skip the main diagonal pattern per the Z-shape requirement
+        if (i == 1) {
+            continue; // Skip pattern {(1,1),(2,2),(3,3),(4,4)}
         }
         
-        // If the pattern has different positions (not all related by T), add to W
-        if (!includePattern) {
-            W[*wCount] = C[i];
-            (*wCount)++;
-        }
+        // Add the pattern to W
+        W[*wCount] = C[i];
+        (*wCount)++;
     }
+    
+    // Now W should contain 3 patterns: top row, anti-diagonal, and bottom row
+    // This creates a Z-shape as requested
 }
 
 /**
