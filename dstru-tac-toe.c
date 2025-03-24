@@ -92,14 +92,14 @@ void initializeGame(GameState *game) {
 void initializeSetC(WinningPattern patterns[]) {
     // TODO: Initialize set C
     for (int i = 0; i < 4; i++){
-        patterns[0].positions[i].x = 1;
-        patterns[0].positions[i].y = i + 1;
-        patterns[1].positions[i].x = i + 1;
-        patterns[1].positions[i].x = i + 1;   // Diag to remove x
-        patterns[1].positions[i].y = i + 1;   // Diag to remove y
-        patterns[1].positions[i].y = 4 - i;
-        patterns[2].positions[i].x = 4;
-        patterns[2].positions[i].y = i + 1;
+        patterns[0].positions[i].x = 1;       // hori top x
+        patterns[0].positions[i].y = i + 1;    // hori top y
+        patterns[1].positions[i].x = i + 1;    // Diag x
+        patterns[1].positions[i].x = i + 1;    // Diag y
+        patterns[2].positions[i].x = i + 1;    // Anti diag x
+        patterns[2].positions[i].y = 4 - i    // anti diag y
+        patterns[3].positions[i].x = 4;       // hori bot x
+        patterns[3].positions[i].y = i + 1;    // hori bot y
     }
     // ADDED By 2ru17
     // Calculate the W set (should exclude the diagonal pattern index 1)
