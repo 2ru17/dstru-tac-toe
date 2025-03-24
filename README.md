@@ -67,7 +67,7 @@ compile (TBA)
 
 - Aquino, Jan Leoric `@janaquino8`
 - Gutang, Neil Jr. `@2ru17`
-- Tan, Lance Jerwin `@LANCEYOURGITHUBUSERNAMEPLS`
+- Tan, Lance Jerwin `@lance203`
 
 ---
 
