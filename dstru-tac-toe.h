@@ -3,7 +3,7 @@
  * Header file for DSTRU-TAC-TOE game
  * CCDSTRU '24-'25 Final Machine Project
  */
-// *Last edited by: janaquino8*
+// *Last edited by: 2ru17*
 
 #ifndef DSTRU_TAC_TOE_H
 #define DSTRU_TAC_TOE_H
@@ -86,7 +86,7 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount);
 /*********************************************
  * DISPLAY AND USER INTERFACE FUNCTIONS
  *********************************************/
-void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token);
+void printInGrid(const Position Player[], int count, int grid[][GRID_SIZE], int token);
 void displayGameState(const GameState *game);
 
 #endif /* DSTRU_TAC_TOE_H */
