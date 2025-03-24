@@ -565,7 +565,7 @@ void calculateSetW(WinningPattern C[], WinningPattern W[], int *wCount) {
  * @param token The token representing the number of the player
  */
 // ASSIGNED TO: janaquino8
-void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token) {
+void printInGrid(const Position Player[], int count, int grid[][GRID_SIZE], int token) {
     int i;
 
     for (i = 0; i < count; i++) {
