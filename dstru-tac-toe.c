@@ -95,11 +95,9 @@ void initializeSetC(WinningPattern patterns[]) {
         patterns[0].positions[i].x = 1;
         patterns[0].positions[i].y = i + 1;
         patterns[1].positions[i].x = i + 1;
-        patterns[1].positions[i].y = i + 1;
-        patterns[2].positions[i].x = i + 1;
-        patterns[2].positions[i].y = 4 - i;
-        patterns[3].positions[i].x = 4;
-        patterns[3].positions[i].y = i + 1;
+        patterns[1].positions[i].y = 4 - i;
+        patterns[2].positions[i].x = 4;
+        patterns[2].positions[i].y = i + 1;
     }
 }
 
@@ -332,11 +330,11 @@ bool isRelatedByT(Position pos1, Position pos2) {
 bool unoMove(GameState *game, Position pos) {
     bool moved;
     if (game->turn == true && game->go == true && isPositionValid(pos) == true && isPositionFree(game, pos) == true){
-                addPositionToSet(pos, game->Uno, &(game->UnoCount));
-                game->turn = false;
-                game->go = false;
-                moved = true;
-            }
+        addPositionToSet(pos, game->Uno, &(game->UnoCount));
+        game->turn = false;
+        game->go = false;
+        moved = true;
+    }
     else
         moved = false;
     
@@ -356,10 +354,10 @@ bool tresMove(GameState *game, Position pos) {
     // TODO: Implement Tres move
     bool moved;
     if (game->turn == true && game->go == false && isPositionValid(pos) == true && isPositionFree(game, pos) == true){
-                addPositionToSet(pos, game->Tres, &(game->TresCount));
-                game->go = true;
-                moved = true;
-            }
+        addPositionToSet(pos, game->Tres, &(game->TresCount));
+        game->go = true;
+        moved = true;
+    }
     else
         moved = false;
     
@@ -377,42 +375,20 @@ bool tresMove(GameState *game, Position pos) {
 // ASSIGNED TO: lance203
 bool removePosition(GameState *game, Position pos) {
     // TODO: Implement position removal
-    //IF WE WILL FOLLOW THE CONCEPT OF TRES & UNO ARE IN ONE SIMILAR POSITION, USE VER 1
-    //IF WE WILL FOLLOW THE CONCEPT OF DOS TAKES EITHER TRES OR UNO, USE VER 2
 
     bool removed;
-    /*VER 1
-    if (game->turn == false && game->go == false){
-        for (int i = 0; i < MAX_POSITIONS; i++){
-            if (game->Uno[i].x == game->Tres[i].x && game->Uno[i].y == game->Tres[i].y){
-                game->Uno[i].x = 0;
-                game->Tres[i].x = 0;
-                game->Uno[i].y = 0;
-                game->Tres[i].y = 0;
-                game->turn == true;
-                removed = true;
-            }
-            else
-                removed = false;
-        }    
-    }
 
-    else
-        removed = false;
-    */
-    
-    //VER 2
     if (game->turn == false && game->go == false){
             if (isPositionInSet(pos, game->Uno, game->UnoCount) == true){
                 removePositionFromSet(pos, game->Uno, &(game->UnoCount));
-                addPositionToSet(pos, game->Dos, &(game->DosCount));
+                addPositionToSet(pos, game->freePositions, &(game->freeCount));
                 game->turn = true;
                 removed = true;
             }
             
             else if (isPositionInSet(pos, game->Tres, game->TresCount) == true){
                 removePositionFromSet(pos, game->Tres, &(game->TresCount));
-                addPositionToSet(pos, game->Dos, &(game->DosCount));
+                addPositionToSet(pos, game->freePositions, &(game->freeCount));
                 game->turn = true;
                 removed = true;
             }
