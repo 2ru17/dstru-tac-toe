@@ -33,7 +33,7 @@ This is the final project for the **DSTRU (Discrete Structures) class, Section S
 ### **Cloning the Repository**
 
 ```sh
-git --
+git clone https://github.com/2ru17/dstru-tac-toe.git
 ```
 
 ### **Compiling the Game**
