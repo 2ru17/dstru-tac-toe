@@ -33,13 +33,13 @@ This is the final project for the **DSTRU (Discrete Structures) class, Section S
 ### **Cloning the Repository**
 
 ```sh
-link
+git --
 ```
 
 ### **Compiling the Game**
 
 ```sh
-compile (TBA)
+gcc -Wall -std=c99 dstru-tac-toe-main.c dstru-tac-toe.c -o game
 ```
 
 ### **Running the Game**
