@@ -20,8 +20,8 @@ DSTRU-TAC-TOE is a **strategic, turn-based game** played on a **4x4 grid** where
   - **Main Diagonal**: `{(1,1), (2,2), (3,3), (4,4)}`
   - **Anti-Diagonal**: `{(1,4), (2,3), (3,2), (4,1)}`
   - **Vertical Line**: `{(4,1), (4,2), (4,3), (4,4)}`
-- **T**: A relation on `A` that is **reflexive, symmetric, antisymmetric, and transitive**
-- **W**: Set `C - T` (winning patterns that are not in relation T)
+- **T**: A relation on `A` that is **reflexive, symmetric, antisymmetric, and transitive:** `{(1,1), (2,2), (3,3), (4,4)}`
+- **W**: Set `C - T` (winning patterns that are not in relation T): `{ {(1,1), (1,2), (1,3), (1,4)}, {(1,4), (2,3), (3,2), (4,1)}, {(4,1), (4,2), (4,3), (4,4)} }`
 
 ### **System Variables**
 - **Uno, Dos, Tres**: Subsets of P representing positions occupied by each entity
@@ -44,6 +44,8 @@ DSTRU-TAC-TOE is a **strategic, turn-based game** played on a **4x4 grid** where
 
 ### **State Transitions (NextPlayerMove)**
 
+- **Sequence of movement as follows:** `Tres -> Uno -> Dos`
+
 When a position `(pos ∈ P)` is selected, the following state transitions occur:
 
 1. **Uno's Move**:
@@ -53,7 +55,7 @@ When a position `(pos ∈ P)` is selected, the following state transitions occur
      - `turn = ¬turn` (Toggle turn)
      - `go = ¬go` (Toggle go)
 
-2. **Position Removal**:
+2. **Position Removal (Dos)**:
    - **Condition**: `¬turn ∧ pos ∈ (Uno ∪ Tres)`
    - **Effect**:
      - `Uno = Uno − {pos}` (Remove position from Uno's set)
