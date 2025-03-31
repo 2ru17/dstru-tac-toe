@@ -387,24 +387,20 @@ bool removePosition(GameState *game, Position pos) {
 
     bool removed;
 
-    if (game->turn == false && game->go == false){
-            if (isPositionInSet(pos, game->Uno, game->UnoCount) == true){
-                removePositionFromSet(pos, game->Uno, &(game->UnoCount));
-                addPositionToSet(pos, game->freePositions, &(game->freeCount));
-                game->turn = true;
-                removed = true;
-            }
-            
-            else if (isPositionInSet(pos, game->Tres, game->TresCount) == true){
-                removePositionFromSet(pos, game->Tres, &(game->TresCount));
-                addPositionToSet(pos, game->freePositions, &(game->freeCount));
-                game->turn = true;
-                removed = true;
-            }
-
-            else
-                removed = false;
+    if (isPositionInSet(pos, game->Uno, game->UnoCount) == true){
+        removePositionFromSet(pos, game->Uno, &(game->UnoCount));
+        addPositionToSet(pos, game->freePositions, &(game->freeCount));
+        game->turn = true;
+        removed = true;
     }
+    
+    else if (isPositionInSet(pos, game->Tres, game->TresCount) == true){
+        removePositionFromSet(pos, game->Tres, &(game->TresCount));
+        addPositionToSet(pos, game->freePositions, &(game->freeCount));
+        game->turn = true;
+        removed = true;
+    }
+
     else
         removed = false;
     return removed;
