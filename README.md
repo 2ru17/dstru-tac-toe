@@ -39,7 +39,7 @@ git clone https://github.com/2ru17/dstru-tac-toe.git
 ### **Compiling the Game**
 
 ```sh
-gcc -Wall -std=c99 dstru-tac-toe-main.c dstru-tac-toe.c -o game
+gcc -Wall -std=c99 dstru-tac-toe-main.c -o game
 ```
 
 ### **Running the Game**
@@ -57,7 +57,6 @@ gcc -Wall -std=c99 dstru-tac-toe-main.c dstru-tac-toe.c -o game
 3. The game enforces rules for **valid moves** and **win conditions**.
 4. The game ends when **one player wins** or **the grid is fully occupied**.
 5. The program announces the winner or declares a draw.
-6. *To be edited if ever*
 
 ---
 
