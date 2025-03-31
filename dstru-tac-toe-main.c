@@ -1,7 +1,7 @@
 /**
  * dstru-tac-toe-main.c
  * Contains the main function for the DSTRU-TAC-TOE game.
- * Authors: 2ru17, Janaquino08, Lance003
+ * Authors: 2ru17, Janaquino08, Lance203
  * Date: March 2025
  */
 
