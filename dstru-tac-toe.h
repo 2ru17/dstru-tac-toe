@@ -1,5 +1,5 @@
 /**
- * dtru-tac-toe.h
+ * dstru-tac-toe.h
  * Header file for DSTRU-TAC-TOE game
  * CCDSTRU '24-'25 Final Machine Project
  */
