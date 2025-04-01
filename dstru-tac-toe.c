@@ -4,7 +4,7 @@
  * CCDSTRU '24-'25 Final Machine Project
  */
 
-// *Last edited by: 2ru17*
+// *Last edited by: janaquino8*
 
 #include "dstru-tac-toe.h"
 
