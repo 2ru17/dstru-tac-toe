@@ -3,7 +3,7 @@
  * Header file for DSTRU-TAC-TOE game
  * CCDSTRU '24-'25 Final Machine Project
  */
-// *Last edited by: 2ru17*
+// *Last edited by: janaquino8*
 
 #ifndef DSTRU_TAC_TOE_H
 #define DSTRU_TAC_TOE_H
@@ -28,7 +28,7 @@ typedef struct {
     /* Sets of positions */
     Position Uno[MAX_POSITIONS];     /* Positions occupied by Uno */
     int UnoCount;                    /* Number of positions in Uno */
-    Position Dos[MAX_POSITIONS];     /* Positions occupied by Dos */ // (REMOVE?)
+    Position Dos[MAX_POSITIONS];     /* Positions occupied by Dos */
     int DosCount;                    /* Number of positions in Dos */
     Position Tres[MAX_POSITIONS];    /* Positions occupied by Tres */
     int TresCount;                   /* Number of positions in Tres */

@@ -574,18 +574,6 @@ void printInGrid(const Position Player[], int count, int grid[][GRID_SIZE], int 
         }
     }
 }
-// old code:
-// void printInGrid(Position Player[], int count, int grid[][GRID_SIZE], int token) {
-//     int i, x, y;
-
-//     for (i = 0; i < count; i++)
-//     {
-//         x = Player[i].x;
-//         y = Player[i].y;
-
-//         grid[x][y] = token;
-//     }
-// }
 
 /**
  * Display the current game state
